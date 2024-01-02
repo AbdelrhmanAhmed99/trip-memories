@@ -30,10 +30,10 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
 
 3. **Copy Code Files:**
 
-    Copy the `face_processor.py` into the `emonet` directory:
+    Copy the `face_processor.py` and `cmd.py` into the `emonet` directory:
 
     ```bash
-    cp path/to/your/faceprocessor.py ./   # ./ is the active directory where it should be myenv/
+    cp path/to/your/faceprocessor.py ./
     cp path/to/your/cmd.py ./
     ```
 
@@ -48,6 +48,10 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
     ```
 
     This will execute the EmoNet Face Analysis code.
+
+5. **Output:**
+
+    The output will be a pickle file named `v1.pkl` containing the video summary dictionary with the most important frames.
 
 ## Notes
 
