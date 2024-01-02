@@ -33,18 +33,18 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
     Copy the `face_processor.py` into the `emonet` directory:
 
     ```bash
-    cp path/to/your/face_processor.py ./   # ./ is the active directory where it should be myenv/
-    cp path/to/your/run_file.py ./
+    cp path/to/your/faceprocessor.py ./   # ./ is the active directory where it should be myenv/
+    cp path/to/your/cmd.py ./
     ```
 
 4. **Run the Code:**
 
     Navigate to the `emonet` directory:
 
-    Run the `run_file.py`:
+    Run the `cmd.py`:
 
     ```bash
-    python run_file.py
+    python cmd.py /content/v1.mp4 --fps 1 --n 10
     ```
 
     This will execute the EmoNet Face Analysis code.
