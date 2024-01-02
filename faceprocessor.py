@@ -124,7 +124,6 @@ class FaceProcessor:
         app = FaceAnalysis(allowed_modules=['detection'], det_thresh=self.det_thresh)
         app.prepare(ctx_id=0, det_size=(640, 640))
         faces = app.get(self.image)
-        rimg = app.draw_on(self.image, faces)
         box = [face.bbox.astype(int) for face in faces]
         # Conversion step
         converted_bboxes = self._convert_bboxes(box)
