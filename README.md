@@ -33,16 +33,13 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
     Copy the `face_processor.py` into the `emonet` directory:
 
     ```bash
-    cp /content/myenv/face_processor.py emonet/
+    cp path/to/your/face_processor.py ./   # ./ is the active directory where it should be myenv/
+    cp path/to/your/run_file.py ./
     ```
 
 4. **Run the Code:**
 
     Navigate to the `emonet` directory:
-
-    ```bash
-    cd emonet
-    ```
 
     Run the `run_file.py`:
 
