@@ -58,3 +58,7 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
 - Make sure to activate the virtual environment (`source myenv/bin/activate`) before running the code.
   
 ## Notebooks
+- https://colab.research.google.com/drive/1TDVExKz4HvsQbBImZfY8ytCELj20dxpC?usp=sharing
+- https://colab.research.google.com/drive/1sDW1Flrl2-UbZq4hcRRSBGY2c0Bf0vIT?usp=sharing
+- https://colab.research.google.com/drive/1m1OCOFcKGCK36dTcqkxlA3Hw0XTrr7vL?usp=sharing
+- https://colab.research.google.com/drive/1oWM5bDXgHzojxywK5Y4Ctzm1qtuJx62o?usp=sharing
