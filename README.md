@@ -56,3 +56,5 @@ This repository contains code for EmoNet Face Analysis. Follow the instructions 
 ## Notes
 
 - Make sure to activate the virtual environment (`source myenv/bin/activate`) before running the code.
+  
+## Notebooks
