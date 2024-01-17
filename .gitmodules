@@ -1,0 +1,3 @@
+[submodule "SPIGA"]
+	path = SPIGA
+	url = https://github.com/andresprados/SPIGA.git
