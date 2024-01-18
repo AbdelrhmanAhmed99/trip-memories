@@ -1,0 +1,6 @@
+[submodule "SPIGA"]
+	path = SPIGA
+	url = https://github.com/andresprados/SPIGA
+[submodule "emonet"]
+	path = emonet
+	url = https://github.com/face-analysis/emonet.git
