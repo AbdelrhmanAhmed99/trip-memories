@@ -137,3 +137,41 @@ def generate_annotated_video(video_path, output_path, pickle_path, annotated_fra
 
     # Close all OpenCV windows
     cv2.destroyAllWindows()
+def visualize_faces_whole_image(widen, image_path):
+    # Load the image from file path
+    image = cv2.imread(image_path)
+
+    # Check if the image loaded successfully
+    if image is None:
+        print(f"Error: Unable to load the image at {image_path}")
+        return
+
+    # Convert BGR image to RGB for Matplotlib
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    # Plot the full frame image
+    plt.imshow(image)
+    plt.axis('off')
+    plt.title('Full Frame Image')
+
+    # Iterate over faces in the 'widen' data
+    for face_id, face_data in widen.items():
+        # Skip if it's not a face entry
+        if not face_id.startswith('face'):
+            continue
+
+        # Draw bounding box
+        x0, y0, w, h = face_data['bounding_box']
+        rect = patches.Rectangle((x0, y0), w, h, linewidth=2, edgecolor='r', facecolor='none')
+        plt.gca().add_patch(rect)
+
+        # Calculate adjusted text position to consider image borders
+        text_x = max(0, min(x0 + 100, image.shape[1] - 10))  # Adjusted x position
+        text_y = max(0, min(y0 - 10, image.shape[0] - 10))  # Adjusted y position
+
+        # Display the expression
+        expression = face_data['expression']
+        plt.text(text_x, text_y, f'{expression}', color='black', fontsize=10)
+
+    # Display the image with bounding boxes
+    plt.show()

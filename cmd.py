@@ -28,8 +28,8 @@ class CommandLineProcessor:
             return
 
         # Initialize the FaceProcessor and perform emotion analysis
-        face_processor = FaceProcessor(image)
-        result = face_processor.emotion_analysis()
+        face_processor = FaceProcessor()
+        result = face_processor.emotion_analysis(image)
 
         # Display or save the results as needed
         if result is not None:
@@ -38,7 +38,7 @@ class CommandLineProcessor:
 
     def process_video(self):
         # Process video and generate a summary
-        face_processor = FaceProcessor(None)  # You might want to pass a dummy frame for initialization
+        face_processor = FaceProcessor()  # You might want to pass a dummy frame for initialization
         summary_frames = face_processor.video_summary(self.path, fps=self.fps, n=self.n)
 
 if __name__ == "__main__":
