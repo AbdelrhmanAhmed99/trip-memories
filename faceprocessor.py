@@ -6,6 +6,8 @@ from insightface.data import get_image as ins_get_image
 import cv2
 import json
 import numpy as np
+import sys
+sys.path.append('/content/trip-memories/SPIGA')
 from spiga.inference.config import ModelConfig
 from spiga.inference.framework import SPIGAFramework
 import copy
@@ -21,27 +23,46 @@ import torch
 import torch.nn as nn
 from skimage import io
 import skimage
+sys.path.append('/content/trip-memories')
 from emonet.emonet.models import EmoNet
 from torchvision import transforms
 from emonet.emonet.data_augmentation import DataAugmentor
 import pickle
-print('model imported')
 class FaceProcessor:
-    def __init__(self, image, det_thresh=0.7):
-        # Remove file extension from the image name  # Assuming the images have a .jpg extension
+    def __init__(self, det_thresh=0.7):
         self.det_thresh = det_thresh
-        self.image=image
         self.n_expression=5
         image_size = 256
         self.transform_image = transforms.Compose([transforms.ToTensor()])
         self.transform_image_shape_no_flip = DataAugmentor(image_size, image_size)
+        self.load_models()
+    def load_models(self):
         self.device = 'cuda:0'
-        state_dict_path =f'/content/emonet/pretrained/emonet_{self.n_expression}.pth'
+        state_dict_path =f'/content/trip-memories/emonet/pretrained/emonet_{self.n_expression}.pth'
         print(f'Loading the emonet model from {state_dict_path}.')
         state_dict = torch.load(str(state_dict_path), map_location='cpu')
         state_dict = {k.replace('module.',''):v for k,v in state_dict.items()}
         self.net = EmoNet(n_expression=self.n_expression).to(self.device)
         self.net.load_state_dict(state_dict, strict=False)
+        self.app = FaceAnalysis(allowed_modules=['detection'], det_thresh=self.det_thresh)
+        self.app.prepare(ctx_id=0, det_size=(640, 640))
+        dataset = '300wpublic'
+        destination_dir = '/content/trip-memories/SPIGA/spiga/models/weights'
+        # Destination file name
+        destination_file = f'spiga_{dataset}.pt'
+
+        # Create the destination directory if it doesn't exist
+        os.makedirs(destination_dir, exist_ok=True)
+
+        # Download the file using gdown
+        file_id = '1YrbScfMzrAAWMJQYgxdLZ9l57nmTdpQC'
+        file_url = f'https://drive.google.com/uc?id={file_id}'
+        file_path = os.path.join(destination_dir, destination_file)
+
+        os.system(f'gdown --id {file_id} -O "{file_path}"')
+
+        self.processor = SPIGAFramework(ModelConfig(dataset))
+        print(f"File downloaded and saved to {destination_dir}")
     def _rotate(self, point, angle, origin):
         x, y = point
         ox, oy = origin
@@ -58,13 +79,13 @@ class FaceProcessor:
 
         return qx, qy
 
-    def _process_faces(self, converted_bboxes, features):
+    def _process_faces(self,image, converted_bboxes, features):
         result_dict = {}
 
         for i, converted_bbox in enumerate(converted_bboxes):
             # Prepare variables
             x0, y0, w, h = converted_bbox
-            face_image = copy.deepcopy(self.image[y0:y0+h, x0:x0+w])
+            face_image = copy.deepcopy(image[y0:y0+h, x0:x0+w])
             landmarks = np.array(features['landmarks'][i])
             headpose = np.array(features['headpose'][i])
 
@@ -87,16 +108,15 @@ class FaceProcessor:
             result_dict[f"face_{i}"] = {
                 'image': rotated_face,
                 'landmarks': new_landmarks,
-                'headpose': headpose.tolist()
+                'headpose': headpose.tolist(),
+                'bounding_box': converted_bbox
             }
-
-            print(f"Processed face {i}")
-
         return result_dict
     def capture_frames(self,video_path, fps):
         video = cv2.VideoCapture(video_path)
         video_fps = video.get(cv2.CAP_PROP_FPS)
-        frame_skip = int(video_fps / fps)
+        if fps<1 : frame_skip=1
+        else: frame_skip = int(video_fps / fps)
 
         frame_count = 0
         results = {}
@@ -109,37 +129,32 @@ class FaceProcessor:
             if frame_count % frame_skip == 0:
                 second = frame_count // video_fps
                 frame = np.array(frame)
-                face_processor = FaceProcessor(frame)
-                result = face_processor.emotion_analysis()
+                result = self.emotion_analysis(frame)
                 if result == None :
                     frame_count += 1
                     continue
-                results[f'frame_{second}_sec'] = result
+                results[f'frame_{frame_count}'] = result
             frame_count += 1
 
         video.release()
         return results
-    def process_faces(self):
+    def process_faces(self,image):
         # Detection and preparation steps
-        app = FaceAnalysis(allowed_modules=['detection'], det_thresh=self.det_thresh)
-        app.prepare(ctx_id=0, det_size=(640, 640))
-        faces = app.get(self.image)
+        faces = self.app.get(image)
         box = [face.bbox.astype(int) for face in faces]
         # Conversion step
-        converted_bboxes = self._convert_bboxes(box)
+        converted_bboxes = self._convert_bboxes(image,box)
         if converted_bboxes == []:
             return None
         # Feature extraction
-        dataset = '300wpublic'
-        processor = SPIGAFramework(ModelConfig(dataset))
-        features = processor.inference(self.image, converted_bboxes)
+        features = self.processor.inference(image, converted_bboxes)
 
         # Face processing step
-        result = self._process_faces(converted_bboxes, features)
+        result = self._process_faces(image,converted_bboxes, features)
 
         return result
 
-    def _convert_bboxes(self, original_bboxes):
+    def _convert_bboxes(self,image, original_bboxes):
         converted_bboxes = []
 
         for original_bbox in original_bboxes:
@@ -151,8 +166,8 @@ class FaceProcessor:
             # Check if the converted bounding box exceeds image dimensions
             converted_left = max(left - margin, 0)
             converted_top = max(top - margin, 0)
-            converted_right = min(right + margin, self.image.shape[1])
-            converted_bottom = min(bottom + margin, self.image.shape[0])
+            converted_right = min(right + margin, image.shape[1])
+            converted_bottom = min(bottom + margin, image.shape[0])
 
             converted_width = converted_right - converted_left
             converted_height = converted_bottom - converted_top
@@ -162,8 +177,8 @@ class FaceProcessor:
 
         return converted_bboxes
 
-    def emotion_analysis(self):
-      result= self.process_faces()
+    def emotion_analysis(self,image):
+      result= self.process_faces(image)
       if result==None:
         return None
       for k,v in result.items():
@@ -214,7 +229,8 @@ class FaceProcessor:
         sorted_frames = sorted(frame_intensities, key=lambda x: x[1], reverse=True)
 
         # Get top n frames or all frames if n is greater than the total frames
-        selected_frames = sorted_frames[:n] if n <= len(sorted_frames) else sorted_frames
+
+        selected_frames = sorted_frames[:n] if (n <= len(sorted_frames) and n>0) else sorted_frames
 
         # Retrieve the frames based on their keys
 
@@ -224,7 +240,8 @@ class FaceProcessor:
 
         video = cv2.VideoCapture(video_path)
         video_fps = video.get(cv2.CAP_PROP_FPS)
-        frame_skip = int(video_fps / fps)
+        if fps<1 : frame_skip=1
+        else: frame_skip = int(video_fps / fps)
 
         frame_count = 0
         while True:
@@ -233,10 +250,9 @@ class FaceProcessor:
                 break
 
             if frame_count % frame_skip == 0:
-                second = frame_count // video_fps
                 frame = np.array(frame)
-                if f'frame_{second}_sec' in frame_keys:
-                      results[f'frame_{second}_sec']['frame_image']=frame
+                if f'frame_{frame_count}' in frame_keys:
+                      results[f'frame_{frame_count}']['frame_image']=frame
             frame_count += 1
         video.release()
         with open(f'{os.path.splitext(video_path)[0]}.pkl', 'wb') as f:
