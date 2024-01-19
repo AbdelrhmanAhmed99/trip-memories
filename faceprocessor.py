@@ -7,7 +7,7 @@ import cv2
 import json
 import numpy as np
 import sys
-sys.path.append('/content/trip-memories/SPIGA')
+sys.path.append('/content/trip-memories/SPIGA') # Adjust the path based on the location of the 'SPIGA' folder
 from spiga.inference.config import ModelConfig
 from spiga.inference.framework import SPIGAFramework
 import copy
@@ -23,7 +23,7 @@ import torch
 import torch.nn as nn
 from skimage import io
 import skimage
-sys.path.append('/content/trip-memories')
+sys.path.append('/content/trip-memories') # Adjust the path based on the location of the 'trip-memories' folder 
 from emonet.emonet.models import EmoNet
 from torchvision import transforms
 from emonet.emonet.data_augmentation import DataAugmentor
@@ -38,7 +38,7 @@ class FaceProcessor:
         self.load_models()
     def load_models(self):
         self.device = 'cuda:0'
-        state_dict_path =f'/content/trip-memories/emonet/pretrained/emonet_{self.n_expression}.pth'
+        state_dict_path =f'/content/trip-memories/emonet/pretrained/emonet_{self.n_expression}.pth'     # Adjust the path based on the location of the 'emonet' folder 
         print(f'Loading the emonet model from {state_dict_path}.')
         state_dict = torch.load(str(state_dict_path), map_location='cpu')
         state_dict = {k.replace('module.',''):v for k,v in state_dict.items()}
@@ -47,7 +47,7 @@ class FaceProcessor:
         self.app = FaceAnalysis(allowed_modules=['detection'], det_thresh=self.det_thresh)
         self.app.prepare(ctx_id=0, det_size=(640, 640))
         dataset = '300wpublic'
-        destination_dir = '/content/trip-memories/SPIGA/spiga/models/weights'
+        destination_dir = '/content/trip-memories/SPIGA/spiga/models/weights'  # Adjust the path based on the location of the 'SPIGA' folder 
         # Destination file name
         destination_file = f'spiga_{dataset}.pt'
 
