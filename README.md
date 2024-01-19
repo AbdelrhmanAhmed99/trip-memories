@@ -53,7 +53,7 @@ Follow the steps below to set up the project on your local machine:
 Explore the following Colab notebooks for detailed experiments:
 
 1. Face Landmark Detection Training Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1TDVExKz4HvsQbBImZfY8ytCELj20dxpC?usp=sharing)
-2. Control Net Fine Tuning Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1sDW1Flrl2-UbZq4hcRRSBGY2c0Bf0vIT?usp=sharing)
+2. Fine Tuning Stable Diffusion Using ControlNet on DMD Variant Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1sDW1Flrl2-UbZq4hcRRSBGY2c0Bf0vIT?usp=sharing)
 3. DMD Database Variant Creation Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1m1OCOFcKGCK36dTcqkxlA3Hw0XTrr7vL?usp=sharing)
 4. Whole System Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1oWM5bDXgHzojxywK5Y4Ctzm1qtuJx62o?usp=sharing)
 
