@@ -1,9 +1,13 @@
 # Trip Memories
 
 Welcome to Trip Memories – an innovative tool that utilizes deep learning to extract and highlight the most emotional moments from your trip videos.
-## Colab Notebook Demo
 
+![Output GIF](Tests/output.gif)
+
+
+## Colab Notebook Demo
 Explore the Colab Notebook Demo for a step-by-step demonstration.[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_PWUEjVedu6RdzzhVNu25RahvcJwRhLi?usp=sharing)
+
 ## Getting Started
 
 Follow the steps below to set up the project on your local machine:
