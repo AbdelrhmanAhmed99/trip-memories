@@ -1,64 +1,54 @@
-# trip-memories
+# Trip Memories
 
-This repository contains code for EmoNet Face Analysis. Follow the instructions below to set up and run the code.
+Welcome to Trip Memories – an innovative tool that utilizes deep learning to extract and highlight the most emotional moments from your trip videos.
+## Colab Notebook Demo
 
-## Prerequisites
+Explore the Colab Notebook Demo for a step-by-step demonstration.[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_PWUEjVedu6RdzzhVNu25RahvcJwRhLi?usp=sharing)
+## Getting Started
 
-- Python 3.6 or later
-- Git
+Follow the steps below to set up the project on your local machine:
 
-## Setup
-
-1. **Create a Virtual Environment:**
-
+1. Clone the repository:
     ```bash
-    python3 -m venv myenv
-    source myenv/bin/activate  # On Windows, use .\myenv\Scripts\activate
+    git clone https://github.com/AbdelrhmanAhmed99/trip-memories.git
+    cd trip-memories
+    ```
+
+2. Initialize submodules:
+    ```bash
+    git submodule update --init --recursive
+    ```
+
+3. Install dependencies:
+    ```bash
     pip install -r requirements.txt
     ```
-
-    This will create a virtual environment named `myenv` and install the required packages.
-
-2. **Clone EmoNet Repository:**
-
-    Navigate to the `myenv` directory and run:
-
+4. Run the command-line tool for video:
     ```bash
-    cd myenv
-    git clone https://github.com/face-analysis/emonet.git
+    python cmd.py /path/to/v1.mp4 --fps 1 --n 10
     ```
+    Replace `/path/to/v1.mp4` with the path to your video, adjust the `--fps` parameter, and set the desired number of highlighted frames with `--n`.
 
-3. **Copy Code Files:**
-
-    Copy the `face_processor.py` and `cmd.py` into the `emonet` directory:
-
+   For photos, simply provide the path to the photo:
     ```bash
-    cp path/to/your/faceprocessor.py ./
-    cp path/to/your/cmd.py ./
+    python cmd.py /path/to/photo.jpg
     ```
+    Replace `/path/to/photo.jpg` with the path to your photo.
 
-4. **Run the Code:**
 
-    Navigate to the `emonet` directory:
+## Note
 
-    Run the `cmd.py`:
+- The paths in the `face_processor.py` file need to be configured if you are running the project locally. The paths are initially configured for a Colab environment.
 
-    ```bash
-    python cmd.py /content/v1.mp4 --fps 1 --n 10
-    ```
+- The output is a `.pkl` file containing memorable frames. You can visualize these frames in any way you prefer and are not limited to using the `generate_annotated_video` function in the `visualization.py` file.
 
-    This will execute the EmoNet Face Analysis code.
+## Experiments
 
-5. **Output:**
+Explore the following Colab notebooks for detailed experiments:
 
-    The output will be a pickle file named `v1.pkl` containing the video summary dictionary with the most important frames.
+1. Face Landmark Detection Training Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1TDVExKz4HvsQbBImZfY8ytCELj20dxpC?usp=sharing)
+2. Control Net Fine Tuning Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1sDW1Flrl2-UbZq4hcRRSBGY2c0Bf0vIT?usp=sharing)
+3. DMD Database Variant Creation Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1m1OCOFcKGCK36dTcqkxlA3Hw0XTrr7vL?usp=sharing)
+4. Whole System Experiment [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1oWM5bDXgHzojxywK5Y4Ctzm1qtuJx62o?usp=sharing)
 
-## Notes
-
-- Make sure to activate the virtual environment (`source myenv/bin/activate`) before running the code.
-  
-## Notebooks
-- https://colab.research.google.com/drive/1TDVExKz4HvsQbBImZfY8ytCELj20dxpC?usp=sharing
-- https://colab.research.google.com/drive/1sDW1Flrl2-UbZq4hcRRSBGY2c0Bf0vIT?usp=sharing
-- https://colab.research.google.com/drive/1m1OCOFcKGCK36dTcqkxlA3Hw0XTrr7vL?usp=sharing
-- https://colab.research.google.com/drive/1oWM5bDXgHzojxywK5Y4Ctzm1qtuJx62o?usp=sharing
+Enjoy reliving your memorable travel experiences with Trip Memories!
