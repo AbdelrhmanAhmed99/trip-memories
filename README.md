@@ -6,6 +6,7 @@ This repository contains the source code for the trip memories pipeline that tak
 
 ## Colab Notebook Demo
 Explore the Colab Notebook Demo for a step-by-step demonstration.[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_PWUEjVedu6RdzzhVNu25RahvcJwRhLi?usp=sharing)
+
 By running the notebook, you will obtain the complete output corresponding to the 20-minute trip video related to the GIF above. This demonstration allows you to experience the entire process and observe the generated results in detail.
 
 
