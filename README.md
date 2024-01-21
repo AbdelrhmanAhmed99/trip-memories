@@ -1,8 +1,17 @@
 # Trip Memories
 
-This repository contains the source code for the trip memories pipeline that takes advantage of deep learning models to obtain emotional moments from your car trip
-![Output GIF](Tests/output.gif)
+**Overview:**
 
+The **Trip Memories** repository is a novel project that redefines the driving experience by focusing on personalization and anticipation of driver needs. It leverages deep learning models to extract emotions from car trip footage, creating a unique and personalized journey. The project is divided into three main modules: image enhancement and restoration, cabin monitoring, and emotion classification. The image enhancement and restoration module has undergone numerous experiments to reach a robust agnostic model capable of handling multi-task degradations and would be added to pipeline soon. The cabin monitoring module, which uses SPIGA, has been extensively researched and is tested to be relevant to driving scenarios. The emotion classification module uses EmoFan that repersents the core of project's attention.
+
+**Applications:**
+
+The applications of this project extend beyond mere technical advancements. By extracting emotions from car trip footage, other systems could be built upon that can anticipate our needs and tailor the journey to our moods and preferences. It can recommend music playlists that will elevate your mood, fine-tune cabin temperature and lighting for utmost comfort, or propose scenic routes that align with your adventurous spirit. These features, powered by advanced recommender systems and emotion analysis, have the potential to enhance safer, more stress-free drives. The system can also be extended to include other modalities in the addition to visual modality, and car exterior camera footage, which could enhance the output and create deeper memories. This personalization of the driving experience opens up new possibilities for car travel, making each trip a unique and enjoyable journey.
+
+
+<p align="center">
+  <img width="100%" src="Tests/output.gif" />
+</p>
 
 ## Colab Notebook Demo
 Explore the Colab Notebook Demo for a step-by-step demonstration.[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1_PWUEjVedu6RdzzhVNu25RahvcJwRhLi?usp=sharing)
@@ -47,6 +56,25 @@ Follow the steps below to set up the project on your local machine:
 - The paths in the `face_processor.py` file need to be configured if you are running the project locally. The paths are initially configured for a Colab environment.
 
 - The output is a `.pkl` file containing memorable frames. You can visualize these frames in any way you prefer and are not limited to using the `generate_annotated_video` function in the `visualization.py` file.
+## Known Limitations
+
+The current version of the system has a few limitations that will be addressed in future work:
+
+1. **Cabin Motoring**: The system can struggle with totally rotated faces for pose estimation and correction. This is a challenge that we plan to tackle in the upcoming iterations.
+
+2. **Image Enhancement**: Until the image enhancement module is added to the pipeline, the system could face issues for parts of the trip footage that are highly degraded. We are aware of this limitation and are working on a solution.
+
+3. **Emotion Classification**: Model results could be further improved.
+
+## Future Work
+
+We have several improvements planned for the future:
+
+1. **SPIGA Training**: We plan to further experiment with training SPIGA on different datasets that are more relevant to the driving scenarios, such as DMD. This could address the bottleneck between the face detection model and SPIGA.
+
+2. **EmoFan Model**: We plan to retrain the EmoFan model after modifying it by replacing its simple attention mechanism with a more complex one on a recently accessed data, AffectNet.
+
+3. **Image Enhancement**: We will continue our experimentation on image enhancement using the DMD database. This will help improve the quality of the footage, especially those parts that are highly degraded.
 
 ## Experiments
 
